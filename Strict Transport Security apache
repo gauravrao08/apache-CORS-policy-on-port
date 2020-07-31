@@ -1,0 +1,19 @@
+<VirtualHost *:80>
+ServerName  example.com
+ServerAlias www.example.com
+DocumentRoot /home/example/com
+ErrorLog /var/log/httpd/example.com_error_log
+CustomLog /var/log/httpd/example.com_access_log combined
+DirectoryIndex index.html index.htm index.php index.php4 index.php5
+AllowEncodedSlashes On
+RewriteEngine On
+RewriteCond %{HTTP:X-Forwarded-Proto} =http
+RewriteRule . https://%{HTTP:Host}%{REQUEST_URI} [L,R=permanent]
+<Directory /home/example/com>
+Options -Indexes +IncludesNOEXEC +SymLinksIfOwnerMatch +ExecCGI
+allow from all
+AllowOverride All Options=ExecCGI,Includes,IncludesNOEXEC,Indexes,MultiViews,SymLinksIfOwnerMatch
+Require all granted
+AddType application/x-httpd-php .php
+</Directory>
+</VirtualHost>
