@@ -1,0 +1,20 @@
+<VirtualHost *:80>
+ServerName website.com
+ServerAlias www.website.com
+DocumentRoot /home/path
+ErrorLog /var/log/httpd/website.com_error.log
+CustomLog /var/log/httpd/website.com_access_log combined
+DirectoryIndex index.html index.htm index.php index.php4 index.php5 index.cgi
+AllowEncodedSlashes On
+RewriteEngine On
+RewriteCond %{HTTPS} !=on
+RewriteRule ^/?(.*) https://website.com/$1 [R,L]
+<Directory /home/path>
+Options -Indexes +IncludesNOEXEC +FollowSymLinks +ExecCGI
+Options +Indexes +ExecCGI
+allow from all
+AllowOverride All Options=ExecCGI,Includes,IncludesNOEXEC,MultiViews,SymLinksIfOwnerMatch
+Require all granted
+AddType application/x-httpd-php .php
+</Directory>
+</VirtualHost>
