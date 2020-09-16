@@ -1,0 +1,24 @@
+<VirtualHost *:80>
+  ServerName domain.com
+  RewriteEngine On
+  RewriteCond %{HTTPS} !=on
+  RewriteRule ^/?(.*) https://domain.com/$1 [R,L]
+</VirtualHost>
+
+<VirtualHost *:443>
+  ProxyPreserveHost On
+  ProxyRequests Off
+  ServerName domain.com
+  ProxyPass / http://127.0.0.1:4011/
+  ProxyPassReverse / http://127.0.0.1:4011/
+  Timeout 2400
+  ProxyTimeout 2400
+  ProxyBadHeader Ignore
+ SSLEngine On
+       SSLProxyEngine On
+       SSLProtocol All -SSLv2 -SSLv3
+       SSLHonorCipherOrder on
+       SSLCipherSuite XXXXXXXXXXXXXXXXXXXXXXXXX
+        SSLCertificateFile /etc/httpd/ssl/XXXX.crt
+       SSLCertificateKeyFile /etc/httpd/ssl/XXXX.key
+</VirtualHost>
