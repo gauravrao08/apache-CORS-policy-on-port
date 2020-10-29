@@ -1,0 +1,23 @@
+<VirtualHost *:443>
+  ProxyPreserveHost On
+  ProxyRequests Off
+  <Proxy *>
+      Require ip IP-range/16
+   </Proxy>
+  ServerName e2e-kibana.com
+  ProxyPass / http://127.0.0.1:5601/
+  ProxyPassReverse / http://127.0.0.1:5601/
+  ErrorLog /var/log/httpd/e2e-kibana.com_error.log
+  CustomLog /var/log/httpd/e2e-kibana.com_access_log combined
+        SSLEngine On
+       SSLProxyEngine On
+       SSLProtocol All -SSLv2 -SSLv3
+       SSLHonorCipherOrder on
+       SSLCipherSuite ECDHE-RSA-
+        SSLCertificateFile /etc/httpd/ssl/xxxxx.crt
+       SSLCertificateKeyFile /etc/httpd/ssl/xxxxxx.key
+       SSLCertificateChainFile /etc/httpd/ssl/xxxxxxxx.crt
+  Timeout 10400
+  ProxyTimeout 10400
+  ProxyBadHeader Ignore
+</VirtualHost>
